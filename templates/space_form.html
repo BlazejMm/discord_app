@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Nowa przestrzen - Komunikator{% endblock %}
+
+{% block content %}
+<main class="form-page">
+    <section class="form-card">
+        <a href="/" class="back-link">Powrot do pulpitu</a>
+        <h1>Nowa przestrzen</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="text-danger small mt-1">{{ form.name.errors }}</div>
+                {% endif %}
+            </div>
+            <button class="primary-button w-100">Utworz</button>
+        </form>
+    </section>
+</main>
+{% endblock %}

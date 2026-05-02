@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Komunikator - pulpit{% endblock %}
+{% block body_class %}app-shell{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <a class="brand" href="/">Komunikator</a>
+    <nav class="top-actions">
+        <a href="/profile/" class="ghost-button">Profil</a>
+        <a href="/logout/" class="danger-button">Wyloguj</a>
+    </nav>
+</header>
+
+<main class="workspace">
+    <section class="intro-panel">
+        <div>
+            <p class="eyebrow">Panel rozmow</p>
+            <h1>Witaj, {{ user.username }}</h1>
+            <p class="muted mb-0">Rola: <strong>{{ user.role }}</strong>{% if user.is_blocked %} · konto zablokowane{% endif %}</p>
+        </div>
+        {% if user.role == 'admin' %}
+            <a href="/channels/new/" class="primary-button">Utworz przestrzen</a>
+        {% endif %}
+    </section>
+
+    <section class="workspace-grid">
+        <div class="panel">
+            <div class="panel-heading">
+                <h2>Przestrzenie</h2>
+                <span>{{ channels|length }}</span>
+            </div>
+            <div class="list-stack">
+                {% for ch in channels %}
+                    <article class="space-row">
+                        <a href="/channel/{{ ch.id }}/" class="space-name">
+                            <span>#</span>
+                            {{ ch.name }}
+                        </a>
+                        <a href="/channel/{{ ch.id }}/join/" class="small-button">Wejdz</a>
+                    </article>
+                {% empty %}
+                    <p class="empty-state">Nie ma jeszcze zadnych przestrzeni.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h2>Osoby</h2>
+                <span>{{ users|length }}</span>
+            </div>
+            <div class="people-list">
+                {% for u in users %}
+                    <article class="person-row">
+                        {% if u.avatar_url %}
+                            <img src="{{ u.avatar_url }}" class="avatar" alt="Avatar {{ u.username }}">
+                        {% else %}
+                            <div class="avatar avatar-fallback">{{ u.username|first|upper }}</div>
+                        {% endif %}
+                        <div class="person-main">
+                            <div class="person-title">
+                                <strong>{{ u.username }}</strong>
+                                <span class="role-pill">{{ u.role }}</span>
+                                {% if u.is_blocked %}
+                                    <span class="blocked-pill">blokada</span>
+                                {% endif %}
+                            </div>
+                            {% if u.bio %}
+                                <p>{{ u.bio }}</p>
+                            {% else %}
+                                <p>Brak opisu profilu.</p>
+                            {% endif %}
+                            <div class="row-actions">
+                                <a href="/dm/{{ u.id }}/" class="small-button">Rozmowa</a>
+                                {% if user.role == 'admin' or user.role == 'mod' %}
+                                    {% if u.is_blocked %}
+                                        <a href="/unblock/{{ u.id }}/" class="ghost-button compact">Odblokuj</a>
+                                    {% else %}
+                                        <a href="/block/{{ u.id }}/" class="danger-button compact">Zablokuj</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </article>
+                {% empty %}
+                    <p class="empty-state">Nie ma innych uzytkownikow.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -87,8 +87,9 @@
 
                         {% if msg.image_url %}
                             <a href="{{ msg.image_url }}" target="_blank">
-                                <img src="{{ msg.image_url }}" class="message-image" alt="Obrazek od {{ msg.user.username }}">
+                                <img src="{{ msg.image_url }}" class="message-image" alt="Obrazek od {{ msg.user.username }}" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='block';">
                             </a>
+                            <a href="{{ msg.image_url }}" target="_blank" class="text-info small" style="display: none;">Otworz obrazek</a>
                         {% endif %}
 
                         {% if msg.audio_url %}
@@ -111,7 +112,7 @@
                     <form method="post" class="d-flex">
                         {% csrf_token %}
                         <input name="content" class="form-control me-2" placeholder="Napisz wiadomość...">
-                        <input type="url" name="image_url" class="form-control me-2" placeholder="Link do obrazka">
+                        <input type="url" name="image_url" class="form-control me-2" placeholder="https://...jpg/png/webp">
                         <input type="url" name="audio_url" class="form-control me-2" placeholder="Link do audio">
                         <button class="btn btn-primary">Wyślij</button>
                     </form>

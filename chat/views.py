@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login, logout
@@ -41,7 +41,7 @@ def tylko_admin(request):
 def home(request):
     channels = Channel.objects.all()
     users = get_user_model().objects.exclude(id=request.user.id)
-    return render(request, 'home.html', {'channels': channels, 'users': users})
+    return render(request, 'workspace.html', {'channels': channels, 'users': users})
 
 @login_required
 def edit_profile(request):
@@ -53,7 +53,7 @@ def edit_profile(request):
     else:
         form = ProfileForm(instance=request.user)
 
-    return render(request, 'profile.html', {'form': form})
+    return render(request, 'account_profile.html', {'form': form})
 
 @login_required
 def create_channel(request):
@@ -69,19 +69,19 @@ def create_channel(request):
     else:
         form = ChannelForm()
 
-    return render(request, 'channel_form.html', {'form': form})
+    return render(request, 'space_form.html', {'form': form})
 
 @login_required
 def join_channel(request, id):
-    channel = Channel.objects.get(id=id)
+    channel = get_object_or_404(Channel, id=id)
     channel.members.add(request.user)
     return redirect(f'/channel/{id}/')
 
 @login_required
 def channel(request, id):
-    channel = Channel.objects.get(id=id)
+    channel = get_object_or_404(Channel, id=id)
     channels = Channel.objects.all()
-    messages = Message.objects.filter(channel=channel)
+    messages = Message.objects.filter(channel=channel).order_by('created_at')
 
     if request.method == "POST":
         if request.user.is_blocked:
@@ -101,7 +101,7 @@ def channel(request, id):
             )
         return redirect(f'/channel/{id}/')
 
-    return render(request, 'channel.html', {
+    return render(request, 'space_thread.html', {
         'channel': channel,
         'channels': channels,
         'messages': messages
@@ -109,7 +109,7 @@ def channel(request, id):
 
 @login_required
 def delete_message(request, id):
-    msg = Message.objects.get(id=id)
+    msg = get_object_or_404(Message, id=id)
 
     if can_moderate(request.user):
         msg.delete()
@@ -122,7 +122,7 @@ def block_user(request, id):
         return HttpResponse("Brak dostepu")
 
     User = get_user_model()
-    user_to_block = User.objects.get(id=id)
+    user_to_block = get_object_or_404(User, id=id)
     if not user_to_block.role == 'admin':
         user_to_block.is_blocked = True
         user_to_block.save()
@@ -135,7 +135,7 @@ def unblock_user(request, id):
         return HttpResponse("Brak dostepu")
 
     User = get_user_model()
-    user_to_unblock = User.objects.get(id=id)
+    user_to_unblock = get_object_or_404(User, id=id)
     user_to_unblock.is_blocked = False
     user_to_unblock.save()
 
@@ -144,7 +144,7 @@ def unblock_user(request, id):
 @login_required
 def direct_messages(request, user_id):
     User = get_user_model()
-    receiver = User.objects.get(id=user_id)
+    receiver = get_object_or_404(User, id=user_id)
 
     if request.method == "POST":
         if request.user.is_blocked:
@@ -171,7 +171,7 @@ def direct_messages(request, user_id):
 
     users = User.objects.exclude(id=request.user.id)
 
-    return render(request, 'dm.html', {
+    return render(request, 'private_thread.html', {
         'receiver': receiver,
         'messages': messages,
         'users': users

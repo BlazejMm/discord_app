@@ -56,7 +56,7 @@ class ChannelForm(forms.ModelForm):
     class Meta:
         model = Channel
         fields = ("name",)
-        labels = {"name": "Nazwa kanalu"}
+        labels = {"name": "Nazwa przestrzeni"}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

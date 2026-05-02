@@ -1,0 +1,28 @@
+Watching for file changes with StatReloader
+[02/May/2026 15:04:41] "GET /static/app.css HTTP/1.1" 200 6948
+[02/May/2026 15:04:41,690] - Broken pipe from ('127.0.0.1', 58670)
+[02/May/2026 15:04:53] "GET /login/ HTTP/1.1" 200 1529
+[02/May/2026 15:04:53,907] - Broken pipe from ('127.0.0.1', 58671)
+[02/May/2026 15:05:12] "GET /login/ HTTP/1.1" 200 1529
+[02/May/2026 15:05:12] "GET /static/app.css HTTP/1.1" 200 6948
+Not Found: /favicon.ico
+[02/May/2026 15:05:12] "GET /favicon.ico HTTP/1.1" 404 5273
+[02/May/2026 15:05:19] "GET /register/ HTTP/1.1" 200 2315
+[02/May/2026 15:06:07] "POST /register/ HTTP/1.1" 200 2567
+[02/May/2026 15:06:07] "GET /static/app.css HTTP/1.1" 304 0
+[02/May/2026 15:06:37] "POST /register/ HTTP/1.1" 200 2583
+[02/May/2026 15:06:37] "GET /static/app.css HTTP/1.1" 304 0
+[02/May/2026 15:06:47] "POST /register/ HTTP/1.1" 200 2583
+[02/May/2026 15:06:59] "POST /register/ HTTP/1.1" 200 2583
+[02/May/2026 15:06:59] "GET /static/app.css HTTP/1.1" 304 0
+[02/May/2026 15:07:13] "POST /register/ HTTP/1.1" 302 0
+[02/May/2026 15:07:13] "GET / HTTP/1.1" 200 12968
+[02/May/2026 15:07:22] "GET /dm/5/ HTTP/1.1" 200 3235
+[02/May/2026 15:07:33] "GET /channel/2/ HTTP/1.1" 200 4620
+[02/May/2026 15:07:33] "GET /static/app.css HTTP/1.1" 304 0
+[02/May/2026 15:07:36] "GET /channel/1/ HTTP/1.1" 200 4620
+[02/May/2026 15:07:39] "GET /channel/3/ HTTP/1.1" 200 2483
+[02/May/2026 15:08:00] "GET /logout/ HTTP/1.1" 302 0
+[02/May/2026 15:08:00] "GET /login/ HTTP/1.1" 200 1529
+[02/May/2026 15:10:20] "GET /login/ HTTP/1.1" 200 1460
+[02/May/2026 15:10:20] "GET /static/app.css HTTP/1.1" 200 6774

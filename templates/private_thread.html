@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Rozmowa z {{ receiver.username }} - Komunikator{% endblock %}
+
+{% block content %}
+<main class="thread-layout">
+    <aside class="rail">
+        <a class="brand" href="/">Komunikator</a>
+        <div>
+            <h2>Rozmowy prywatne</h2>
+            <div class="rail-list mt-3">
+                {% for u in users %}
+                    <a href="/dm/{{ u.id }}/" class="rail-link {% if u.id == receiver.id %}active{% endif %}">{{ u.username }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="rail-footer">
+            <p class="mb-2">Zalogowano jako<br><strong>{{ user.username }}</strong></p>
+            <div class="d-grid gap-2">
+                <a href="/" class="ghost-button">Pulpit</a>
+                <a href="/logout/" class="danger-button">Wyloguj</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="thread">
+        <header class="thread-header">
+            <div>
+                <p class="eyebrow">Wiadomosci prywatne</p>
+                <h1>{{ receiver.username }}</h1>
+            </div>
+            <div class="thread-nav">
+                <a href="/profile/" class="ghost-button">Profil</a>
+            </div>
+        </header>
+
+        <div class="message-stream">
+            {% for msg in messages %}
+                <article class="message {% if msg.sender.id == user.id %}mine{% endif %}">
+                    <div class="message-meta">
+                        <strong>{{ msg.sender.username }}</strong>
+                        <span>{{ msg.created_at|date:"d.m.Y H:i" }}</span>
+                    </div>
+                    {% if msg.content %}
+                        <p class="message-body">{{ msg.content }}</p>
+                    {% endif %}
+                    {% if msg.image_url %}
+                        <a href="{{ msg.image_url }}" target="_blank">
+                            <img src="{{ msg.image_url }}" class="message-media" alt="Obraz w rozmowie" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='inline-flex';">
+                        </a>
+                        <a href="{{ msg.image_url }}" target="_blank" class="small-button compact" style="display: none;">Otworz obraz</a>
+                    {% endif %}
+                    {% if msg.audio_url %}
+                        <audio controls class="d-block mt-2" style="max-width: 360px; width: 100%;">
+                            <source src="{{ msg.audio_url }}">
+                        </audio>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <p class="empty-state">Nie ma jeszcze wiadomosci w tej rozmowie.</p>
+            {% endfor %}
+        </div>
+
+        <div class="composer-wrap">
+            {% if user.is_blocked %}
+                <p class="blocked-note">Twoje konto jest zablokowane. Nie mozesz wysylac wiadomosci.</p>
+            {% else %}
+                <form method="post" class="composer">
+                    {% csrf_token %}
+                    <input name="content" class="form-control" placeholder="Wiadomosc prywatna">
+                    <input type="url" name="image_url" class="form-control" placeholder="URL obrazu">
+                    <input type="url" name="audio_url" class="form-control" placeholder="URL audio">
+                    <button class="primary-button">Wyslij</button>
+                </form>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

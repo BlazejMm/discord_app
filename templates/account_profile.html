@@ -1,17 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Rejestracja - Komunikator{% endblock %}
+{% block title %}Profil - Komunikator{% endblock %}
 
 {% block content %}
 <main class="form-page">
     <section class="form-card">
-        <div class="brand mb-4">Komunikator</div>
-        <h1>Nowe konto</h1>
+        <a href="/" class="back-link">Powrot do pulpitu</a>
+        <h1>Profil</h1>
         <form method="post">
             {% csrf_token %}
-            {% if form.non_field_errors %}
-                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
-            {% endif %}
             {% for field in form %}
                 <div class="mb-3">
                     {{ field.label_tag }}
@@ -21,12 +18,8 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <button class="primary-button w-100">Utworz konto</button>
+            <button class="primary-button w-100">Zapisz zmiany</button>
         </form>
-        <p class="text-center mt-3 mb-0">
-            Masz juz konto?
-            <a href="/login/" class="back-link mb-0">Zaloguj sie</a>
-        </p>
     </section>
 </main>
 {% endblock %}
