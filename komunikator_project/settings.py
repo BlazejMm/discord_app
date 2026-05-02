@@ -43,7 +43,7 @@ MIDDLEWARE = [
 if importlib.util.find_spec('whitenoise'):
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
-ROOT_URLCONF = 'agora_project.urls'
+ROOT_URLCONF = 'komunikator_project.urls'
 
 TEMPLATES = [
     {
@@ -61,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'agora_project.wsgi.application'
+WSGI_APPLICATION = 'komunikator_project.wsgi.application'
 
 DATABASES = {
     'default': {
